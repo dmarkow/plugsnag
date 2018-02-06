@@ -6,7 +6,7 @@ defmodule Plugsnag.BasicErrorReportBuilder do
   @behaviour Plugsnag.ErrorReportBuilder
 
   def build_error_report(error_report, conn) do
-    %{error_report | metadata: build_metadata(conn)}
+    Map.put(error_report, :metaData, build_metadata(conn))
   end
 
   defp build_metadata(conn) do
