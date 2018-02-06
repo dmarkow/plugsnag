@@ -6,7 +6,7 @@ defmodule Plugsnag.BasicErrorReportBuilder do
   @behaviour Plugsnag.ErrorReportBuilder
 
   def build_error_report(error_report, conn) do
-    Map.put(error_report, :metaData, build_metadata(conn))
+    Map.put(error_report, :metadata, build_metadata(conn))
   end
 
   defp build_metadata(conn) do
@@ -16,14 +16,14 @@ defmodule Plugsnag.BasicErrorReportBuilder do
 
     %{
       request: %{
-        request_path: conn.request_path,
-        method: conn.method,
-        port: conn.port,
-        scheme: conn.scheme,
-        query_string: conn.query_string,
-        params: filter(:params, conn.params),
-        headers: collect_req_headers(conn),
-        client_ip: format_ip(conn.remote_ip)
+        zrequest_path: conn.request_path,
+        zmethod: conn.method,
+        zport: conn.port,
+        zscheme: conn.scheme,
+        zquery_string: conn.query_string,
+        zparams: filter(:params, conn.params),
+        zheaders: collect_req_headers(conn),
+        zclient_ip: format_ip(conn.remote_ip)
       }
     }
   end
