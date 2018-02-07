@@ -23,6 +23,7 @@ defmodule Plugsnag.BasicErrorReportBuilder do
         query_string: conn.query_string,
         params: filter(:params, conn.params),
         headers: collect_req_headers(conn),
+        resp_headers: collect_resp_headers(conn),
         client_ip: format_ip(conn.remote_ip)
       }
     }
@@ -31,6 +32,13 @@ defmodule Plugsnag.BasicErrorReportBuilder do
   defp collect_req_headers(conn) do
     headers = Enum.reduce(conn.req_headers, %{}, fn({header, _}, acc) ->
       Map.put(acc, header, Plug.Conn.get_req_header(conn, header) |> List.first)
+    end)
+    filter(:headers, headers)
+  end
+
+  defp collect_resp_headers(conn) do
+    headers = Enum.reduce(conn.resp_headers, %{}, fn({header, _}, acc) ->
+      Map.put(acc, header, Plug.Conn.get_resp_header(conn, header) |> List.first)
     end)
     filter(:headers, headers)
   end
